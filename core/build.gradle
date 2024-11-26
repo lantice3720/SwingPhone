@@ -1,0 +1,25 @@
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+eclipse.project.name = appName + '-core'
+
+compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile) {
+  options.encoding = "UTF-8"
+}
+
+ext {
+  ktxVersion = '1.12.1-rc2'
+  coroutinesVersion = '1.8.1'
+}
+
+dependencies {
+  api "com.badlogicgames.gdx:gdx:$gdxVersion"
+  api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  api group: 'io.github.libktx', name: 'ktx-app', version: ktxVersion
+  api group: 'io.github.libktx', name: 'ktx-async', version: ktxVersion
+  api group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutinesVersion
+
+  if(enableGraalNative == 'true') {
+    implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
+  }
+  implementation "com.badlogicgames.gdx-video:gdx-video:1.3.2-SNAPSHOT"
+}
