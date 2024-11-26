@@ -4,17 +4,14 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.*
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy
 import com.badlogic.gdx.graphics.g3d.decals.Decal
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.StretchViewport
@@ -52,7 +49,13 @@ class MenuScreen(private val game: SwingPhone) : Screen {
 
         rootTable.row()
 
-        rootTable.add(startButton).align(Align.center).size(200f, 100f).pad(100f, 0f, 100f, 0f).colspan(100)
+        startButton.addListener(object : InputListener() {
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                game.screen = GameListManager.gameList[inputController3d.index]
+                return true
+            }
+        })
+        rootTable.add(startButton).align(Align.center).size(300f, 80f).pad(120f, 0f, 80f, 0f).colspan(100)
 
         rootTable.row()
 
@@ -91,12 +94,7 @@ class MenuScreen(private val game: SwingPhone) : Screen {
             val gameDecal = Decal.newDecal(
                 6f,
                 6f,
-                TextureRegion(Texture("test.png").apply {
-                    setFilter(
-                        Texture.TextureFilter.Linear,
-                        Texture.TextureFilter.Linear
-                    )
-                })
+                GameListManager.gameList[i].thumbnail
             )
             gameDecal.position = Vector3(0f, 0f, 10f)
             gameDecal.position.rotate(Vector3.Y, (360 / GameListManager.gameList.size * i).toFloat())

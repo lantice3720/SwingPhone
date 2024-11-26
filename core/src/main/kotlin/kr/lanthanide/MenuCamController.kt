@@ -1,6 +1,5 @@
 package kr.lanthanide
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.math.Vector3
@@ -15,6 +14,7 @@ class MenuCamController(private val camera: Camera) : InputProcessor {
     private var isTouching = false
     private var parking = false
     var parked = true
+    var index = 0
 
     fun tick(delta: Float) {
 
@@ -38,13 +38,13 @@ class MenuCamController(private val camera: Camera) : InputProcessor {
             if (camera.position.x < 0) theta = -theta + 2 * PI.toFloat()
             theta += indexSize / 2
 
-            val nearestIndex = floor(theta / indexSize).toInt()
             val offsetFromNearest = theta % indexSize - indexSize / 2
 
             if (offsetFromNearest.absoluteValue < 0.01) {
                 deltaX = 0f
                 camera.position.rotateRad(Vector3.Y, -offsetFromNearest)
 
+                index = floor(theta / indexSize).toInt()
                 parked = true
             } else {
                 deltaX += (offsetFromNearest) / 2
